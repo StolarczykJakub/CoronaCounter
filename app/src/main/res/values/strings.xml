@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">CoronaCounter</string>
+    <string name="counter_death_count_label">Liczba śmierci:</string>
+    <string name="counter_confirmed_label">Liczba wystąpień:</string>
+    <string name="counter_recovered_label">Liczba wyleczonych:</string>
+    <string name="counter_refresh_label">Odswież dane</string>
+    <string name="counter_data_sources_label">Data sources: WHO, CDC, ECDC, NHC and DXY</string>
+</resources>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="preloaded_fonts" translatable="false">
+        <item>@font/aldrich</item>
+        <item>@font/allerta</item>
+        <item>@font/amiko</item>
+        <item>@font/cagliostro</item>
+        <item>@font/candal</item>
+        <item>@font/coda</item>
+        <item>@font/doppio_one</item>
+        <item>@font/gudea</item>
+        <item>@font/hind_siliguri_light</item>
+        <item>@font/margarine</item>
+        <item>@font/michroma</item>
+        <item>@font/numans</item>
+        <item>@font/roboto_thin</item>
+        <item>@font/signika_negative_light</item>
+        <item>@font/sintony</item>
+        <item>@font/sniglet</item>
+        <item>@font/syncopate</item>
+        <item>@font/ubuntu_light</item>
+        <item>@font/unica_one</item>
+    </array>
+</resources>
