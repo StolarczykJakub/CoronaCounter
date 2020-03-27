@@ -110,9 +110,9 @@
             android:layout_height="match_parent"
             android:fontFamily="@font/aldrich"
             android:gravity="center"
-            android:text="134"
             android:textColor="#E91E63"
-            android:textSize="44sp" />
+            android:textSize="44sp"
+            tools:text="134" />
     </androidx.cardview.widget.CardView>
 
 
