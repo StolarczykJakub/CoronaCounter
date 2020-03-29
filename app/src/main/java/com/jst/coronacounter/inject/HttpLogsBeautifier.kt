@@ -9,9 +9,6 @@ import okhttp3.logging.HttpLoggingInterceptor
 import okio.Buffer
 import okio.EOFException
 import okio.GzipSource
-import org.json.JSONArray
-import org.json.JSONException
-import org.json.JSONObject
 import java.nio.charset.Charset
 import java.nio.charset.StandardCharsets.UTF_8
 import java.util.concurrent.TimeUnit
@@ -153,7 +150,7 @@ class HttpLogsBeautifier(
                     platform.log(buffer.clone().readString(charset))
                     platform.log("  🠈 END HTTP (${buffer.size}-byte, $gzippedLength-gzipped-byte body)")
                 } else {
-                    platform.log(formattedBody(buffer.clone().readString(charset)))
+                    platform.log(formatJSONBody(buffer.clone().readString(charset)))
                     platform.log("  🠈 END HTTP (${buffer.size}-byte body)")
                 }
             }
@@ -207,20 +204,69 @@ class HttpLogsBeautifier(
         }
     }
 
-
-    private fun formattedBody(printableBody: String): String =
-        try {
-            when {
-                printableBody.trimStart()[0] == '{' -> formatAsJsonObject(printableBody)
-                printableBody.trimStart()[0] == '[' -> formatAsJsonArray(printableBody)
-                else -> printableBody
-            }
-        } catch (e: JSONException) {
-            printableBody
-        } catch (e: StringIndexOutOfBoundsException) {
-            ""
+    private fun formatJSONBody(body: String, indentSpaces: Int = 2): String {
+        if (body.trimStart()[0] != '{' && body.trimStart()[0] != '[') {
+            return body
         }
+        val bodyCharArray = body.toCharArray()
+        val newline = System.lineSeparator()
+        val formattedBodyBuilder = StringBuilder()
+        var notBetweenQuotes = true
+        var index = 0
+        var baseIndent = 0
 
-    private fun formatAsJsonObject(msg: String): String = JSONObject(msg).toString(jsonIndentSpaces)
-    private fun formatAsJsonArray(msg: String): String = JSONArray(msg).toString(jsonIndentSpaces)
+        loop@ while (index < bodyCharArray.size) {
+            val character = bodyCharArray[index]
+            if (character == '\"') {
+                formattedBodyBuilder.append(character)
+                notBetweenQuotes = !notBetweenQuotes
+                index++
+                continue@loop
+            }
+            if (notBetweenQuotes) {
+                when (character) {
+                    '{', '[' -> {
+                        baseIndent += indentSpaces
+                        formattedBodyBuilder.append(
+                            character + newline + createIndentSpace(baseIndent)
+                        )
+                        index++
+                        continue@loop
+                    }
+                    '}', ']' -> {
+                        baseIndent -= indentSpaces
+                        formattedBodyBuilder.append(
+                            newline + (
+                                    if (baseIndent > 0) createIndentSpace(baseIndent) else "") + character
+                        )
+                        index++
+                        continue@loop
+                    }
+                    ':' -> {
+                        formattedBodyBuilder.append("$character ")
+                        index++
+                        continue@loop
+                    }
+                    ',' -> {
+                        formattedBodyBuilder.append(
+                            character.toString() + newline + if (baseIndent > 0) createIndentSpace(
+                                baseIndent
+                            ) else ""
+                        )
+                        index++
+                        continue@loop
+                    }
+                    else -> if (Character.isWhitespace(character)) {
+                        index++
+                        continue@loop
+                    }
+                }
+            }
+            formattedBodyBuilder.append(character.toString() + if (character == '\\') bodyCharArray[++index] else "")
+            index++
+        }
+        return formattedBodyBuilder.toString()
+    }
+
+    private fun createIndentSpace(indent: Int) = String.format("%${indent}s", "")
 }

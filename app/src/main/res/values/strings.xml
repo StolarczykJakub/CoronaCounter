@@ -5,4 +5,5 @@
     <string name="counter_recovered_label">Liczba wyleczonych:</string>
     <string name="counter_refresh_label">Odswież dane</string>
     <string name="counter_data_sources_label">Data sources: WHO, CDC, ECDC, NHC and DXY</string>
+    <string name="counter_header_label">Status Koronowirusa w Polsce</string>
 </resources>

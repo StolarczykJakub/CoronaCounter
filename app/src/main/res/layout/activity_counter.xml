@@ -12,7 +12,7 @@
         android:layout_height="60dp"
         android:fontFamily="@font/hind_siliguri_light"
         android:gravity="center"
-        android:text="Status Koronowirusa w Polsce"
+        android:text="@string/counter_header_label"
         android:textColor="#01080F"
         android:textSize="20sp"
         android:textStyle="bold"
