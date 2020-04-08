@@ -18,12 +18,14 @@ import java.util.concurrent.TimeUnit
  * JSON arrays and JSON objects can be formatted with chosen indent spaces.
  * Interceptor is also able to show additional headers like "Request, Headers, Body"
  * @param level - NONE, BASIC, HEADERS, BODY
+ * @param formatBody - turn on / off formatting by desire
  * @param jsonIndentSpaces - json body indent spaces
  * @param showExtraHeaders - enables additional log headers
  * @author Jakub Stolarczyk 22.03.2020
  */
 class HttpLogsBeautifier(
     private val level: HttpLoggingInterceptor.Level,
+    private val formatBody: Boolean = false,
     private val jsonIndentSpaces: Int = 2,
     private val showExtraHeaders: Boolean = false
 ) : Interceptor {
@@ -205,7 +207,7 @@ class HttpLogsBeautifier(
     }
 
     private fun formatJSONBody(body: String, indentSpaces: Int = 2): String {
-        if (body.trimStart()[0] != '{' && body.trimStart()[0] != '[') {
+        if (body.trimStart()[0] != '{' && body.trimStart()[0] != '[' || !formatBody) {
             return body
         }
         val bodyCharArray = body.toCharArray()
@@ -249,7 +251,7 @@ class HttpLogsBeautifier(
                     }
                     ',' -> {
                         formattedBodyBuilder.append(
-                            character.toString() + newline + if (baseIndent > 0) createIndentSpace(
+                            character + newline + if (baseIndent > 0) createIndentSpace(
                                 baseIndent
                             ) else ""
                         )

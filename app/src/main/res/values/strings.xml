@@ -6,4 +6,6 @@
     <string name="counter_refresh_label">Odswież dane</string>
     <string name="counter_data_sources_label">Data sources: WHO, CDC, ECDC, NHC and DXY</string>
     <string name="counter_header_label">Status Koronowirusa w Polsce</string>
+
+    <string name="progress_bar_label">Proszę czekać…</string>
 </resources>

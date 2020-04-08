@@ -28,7 +28,11 @@ fun provideOkHttpClient(): OkHttpClient =
     OkHttpClient()
         .newBuilder()
         .addInterceptor(
-            HttpLogsBeautifier(HttpLoggingInterceptor.Level.BODY, 2, true)
+            HttpLogsBeautifier(
+                level = HttpLoggingInterceptor.Level.BODY,
+                formatBody = true,
+                showExtraHeaders = true
+            )
         )
         .build()
 

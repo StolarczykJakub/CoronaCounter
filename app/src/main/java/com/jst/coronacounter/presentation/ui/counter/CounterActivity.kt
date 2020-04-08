@@ -27,14 +27,14 @@ class CounterActivity : AppCompatActivity() {
         viewModel.viewState.observe(this, Observer { viewState ->
             when (viewState) {
                 is Loading -> {
-                    progressBar.visibility = View.VISIBLE
+                    progressBarView.visibility = View.VISIBLE
                 }
                 is Error -> {
-                    progressBar.visibility = View.GONE
+                    progressBarView.visibility = View.GONE
                     Log.d(" ERROR ",  "** ${viewState.message}")
                 }
                 is DataLoaded -> {
-                    progressBar.visibility = View.GONE
+                    progressBarView.visibility = View.GONE
                     deathCounter.text = viewState.data.deaths.toString()
                     confirmedCounter.text = viewState.data.confirmed.toString()
                     recoveredCounter.text = viewState.data.recovered.toString()
